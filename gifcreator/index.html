@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <title>JoyReactor html creator</title>
+    <link rel="stylesheet" type="text/css" href="./Styles/styles.css">
+    <script src="https://code.jquery.com/jquery-1.12.1.min.js" integrity="sha256-I1nTg78tSrZev3kjvfdM5A5Ak/blglGzlaZANLPDl3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="./Scripts/gif.js"></script>
+    <script type="text/javascript" src="./Scripts/gif.worker.js"></script>
+    <script type="text/javascript" src="./Scripts/model.js"></script>
+    <script type="text/javascript">
+		$(function() {
+            window.model = new Model();
+            ko.applyBindings(window.model)
+        });
+	</script>
+</head>
+
+<body>
+    <label>Ширина:</label> <input type="number" data-bind="value: width" min="100" max="1024"></input> <br/>
+    <label>Высота:</label> <input type="number" data-bind="value: height" min="100" max="768"></input> <br/>
+    <label>Длительность показа одной картинки по умолчанию (мс.):</label> <input type="number" data-bind="value: defaultInterval" min="50" max="3000"></input>
+    <div data-bind="visible: result">
+        Результат: <span data-bind="text: result"></span>
+    </div>
+    <button data-bind="click: getResult">Посчитать результат</button>
+    <ul data-bind="foreach: frames">
+    	<li>
+    		<!-- ko if: isTextFrame -->
+            <label>Положение текста по горизонтали:</label> <input type="number" data-bind="value: posX, event: {change: redraw}"></input> <br/>
+            <label>Положение текста по вертикали:</label> <input type="number" data-bind="value: posY, event: {change: redraw}"></input> <br/>
+            <label>Размер шрифта:</label> <input type="number" data-bind="value: fontSize, event: {change: redraw}"></input> <br/>
+            <canvas data-bind="attr: { width: $root.width, height: $root.height, id: uuid }"></canvas> <br/>
+    		<input data-bind="value: text, event: {change: redraw}"></input>
+    		<!-- /ko -->
+    		<button data-bind="click: $root.removeFrame">Удалить кадр</a>
+    	</li>
+    </ul>
+    <button data-bind="click: addTextFrame">Добавить кадр с текстом</button>
+</body>
+
+</html>
